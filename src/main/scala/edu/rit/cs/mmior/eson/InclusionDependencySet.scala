@@ -79,4 +79,12 @@ class InclusionDependencySet() extends Traversable[InclusionDependency] {
       checkClosure(newerINDs)
     }
   }
+
+  def forTables(tables: Set[Symbol]): InclusionDependencySet = {
+    var newSet = new InclusionDependencySet()
+    this.filter(ind => tables.contains(ind.leftTable) && tables.contains(ind.rightTable)).foreach { ind =>
+      newSet += ind
+    }
+    newSet
+  }
 }
