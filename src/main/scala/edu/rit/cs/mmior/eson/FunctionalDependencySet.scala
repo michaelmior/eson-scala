@@ -25,8 +25,10 @@ class FunctionalDependencySet extends Traversable[FunctionalDependency] {
     this
   }
 
-  override def foreach[U](f: FunctionalDependency => U) = fds.map {
-    case(left, right) => FunctionalDependency(left, right.toSet)
+  override def foreach[U](f: FunctionalDependency => U) = fds.flatMap {
+    case(left, right) => {
+      right.subsets.filter(s => !s.isEmpty).map(s => FunctionalDependency(left, s.toSet))
+    }
   }.foreach(f)
 
   // XXX: The set must already contain newFDs
@@ -34,9 +36,9 @@ class FunctionalDependencySet extends Traversable[FunctionalDependency] {
     var newerFDs = LinkedHashSet.empty[FunctionalDependency]
     newFDs.foreach { newFD =>
       this.foreach { oldFD =>
-        val newerFD = if (oldFD.left subsetOf newFD.right) {
+        val newerFD = if (oldFD.left == newFD.right) {
           Some(FunctionalDependency(newFD.left, oldFD.right.toSet))
-        } else if (newFD.left subsetOf oldFD.right) {
+        } else if (newFD.left == oldFD.right) {
           Some(FunctionalDependency(oldFD.left, newFD.right))
         } else {
           None
