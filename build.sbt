@@ -3,8 +3,9 @@ import Dependencies._
 lazy val root = (project in file(".")).
   settings(
     inThisBuild(List(
-      organization := "com.example",
+      organization := "edu.rit.cs",
       scalaVersion := "2.12.7",
+      crossScalaVersions := Seq("2.9.3", "2.10.6", "2.11.11", "2.12.7"),
       version      := "0.1.0-SNAPSHOT"
     )),
     name := "eson-scala",
