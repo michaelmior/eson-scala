@@ -8,5 +8,6 @@ class FunctionalDependencySetSpec extends FlatSpec with Matchers {
     fds += FunctionalDependency(Set('a), Set('b))
     fds += FunctionalDependency(Set('b), Set('c))
     fds should contain (FunctionalDependency(Set('a), Set('c)))
+    fds.contains(FunctionalDependency(Set('a), Set('c))) shouldBe true
   }
 }

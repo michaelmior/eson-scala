@@ -16,7 +16,6 @@
 
 package edu.rit.cs.mmior.eson
 
-import scala.collection.SetLike
 import scala.collection.mutable.{HashMap, LinkedHashSet}
 
 class FunctionalDependencySet extends Traversable[FunctionalDependency] {
