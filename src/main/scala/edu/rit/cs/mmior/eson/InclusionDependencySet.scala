@@ -80,13 +80,19 @@ class InclusionDependencySet() extends Traversable[InclusionDependency] {
     }
   }
 
-  def forTable(table: Symbol): InclusionDependencySet = {
-    forTables(Set(table))
+  def forTable(table: Symbol, only: Boolean = true): InclusionDependencySet = {
+    forTables(Set(table), only)
   }
 
-  def forTables(tables: Set[Symbol]): InclusionDependencySet = {
+  def forTables(tables: Set[Symbol], only: Boolean = true): InclusionDependencySet = {
     var newSet = new InclusionDependencySet()
-    this.filter(ind => tables.contains(ind.leftTable) && tables.contains(ind.rightTable)).foreach { ind =>
+    this.filter(ind => {
+      if (only) {
+        tables.contains(ind.leftTable) && tables.contains(ind.rightTable)
+      } else {
+        tables.contains(ind.leftTable) || tables.contains(ind.rightTable)
+      }
+    }).foreach { ind =>
       newSet += ind
     }
     newSet
