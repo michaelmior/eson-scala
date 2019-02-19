@@ -118,10 +118,10 @@ class Schema {
   private def collect(): Boolean = {
     var changed = false
     inds.foreach { ind =>
-      val left = ind.rightFields.slice(1, ind.rightFields.length - 1).toSet
+      val left = ind.rightFields.slice(0, ind.rightFields.length - 1).toSet
       val right = ind.rightFields.last
       if (fds(ind.rightTable).contains(FunctionalDependency(left, right))) {
-        val newLeft = ind.leftFields.slice(1, ind.leftFields.length - 1)
+        val newLeft = ind.leftFields.slice(0, ind.leftFields.length - 1)
         val newRight = ind.leftFields.last
         val newFD = FunctionalDependency(newLeft.toSet, newRight)
         if (!fds.contains(ind.leftTable) || !fds(ind.leftTable).contains(newFD)) {
