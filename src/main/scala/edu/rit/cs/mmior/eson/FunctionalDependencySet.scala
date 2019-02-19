@@ -29,6 +29,10 @@ class FunctionalDependencySet extends Traversable[FunctionalDependency] {
     }
   }
 
+  private[eson] def getAll(): HashMap[Set[Symbol], LinkedHashSet[Symbol]] = {
+    fds
+  }
+
   private def add(fd: FunctionalDependency): Unit = {
     if (!fds.contains(fd.left)) {
       fds(fd.left) = LinkedHashSet.empty[Symbol]

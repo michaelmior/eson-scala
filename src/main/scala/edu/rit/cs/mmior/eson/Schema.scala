@@ -21,22 +21,88 @@ import scala.collection.mutable.{HashMap, HashSet}
 class Schema {
   var inds = new InclusionDependencySet()
   var fds = HashMap.empty[Symbol, FunctionalDependencySet]
-  var tables = HashSet.empty[Symbol]
+  var tables = HashMap.empty[Symbol, HashSet[Symbol]]
 
   def +=(table: Symbol, fd: FunctionalDependency): Unit = {
     if (!fds.contains(table)) {
       fds(table) = new FunctionalDependencySet()
     }
     fds(table) += fd
+    tables(table) ++= fd.left + fd.right
     infer
   }
 
   def +=(ind: InclusionDependency): Unit = {
     inds += ind
+    tables(ind.leftTable) ++= ind.leftFields
+    tables(ind.rightTable) ++= ind.rightFields
   }
 
   def +=(table: Symbol): Unit = {
-    tables += table
+    tables(table) = new HashSet[Symbol]
+  }
+
+  def bcnf_decompose(): Unit = {
+    var decomposed = true
+    while (decomposed) {
+      decomposed = false
+      fds.foreach { case (table, fdSet) =>
+        fdSet.getAll().foreach { case (left, right) =>
+          val isKey = (tables(table) -- left).subsetOf(right)
+          if (!isKey) {
+            decomposed = true
+
+            val newLeftTable = Symbol(table.name + "_1")
+            val newRightTable = Symbol(table.name + "_2")
+            tables(newLeftTable) = HashSet() ++ left ++ right
+            tables(newRightTable) = HashSet() ++ (tables(table) -- right)
+
+            // Copy FDs to the new tables
+            fds(newLeftTable) = new FunctionalDependencySet()
+            fds(newRightTable) = new FunctionalDependencySet()
+            fdSet.foreach { fd =>
+              if ((fd.left + fd.right).subsetOf(tables(newLeftTable))) {
+                fds(newLeftTable) += fd
+              }
+              if ((fd.left + fd.right).subsetOf(tables(newRightTable))) {
+                fds(newRightTable) += fd
+              }
+            }
+
+            // Remove old FDs
+            fds.remove(table)
+
+            // Copy INDs to the new tables
+            inds.foreach { ind =>
+              if (ind.leftTable == table) {
+                if (ind.leftFields.toSet.subsetOf(tables(newLeftTable))) {
+                  inds += InclusionDependency(newLeftTable, ind.leftFields, ind.rightTable, ind.rightFields)
+                }
+                if (ind.leftFields.toSet.subsetOf(tables(newRightTable))) {
+                  inds += InclusionDependency(newRightTable, ind.leftFields, ind.rightTable, ind.rightFields)
+                }
+              }
+              if (ind.rightTable == table) {
+                if (ind.rightFields.toSet.subsetOf(tables(newLeftTable))) {
+                  inds += InclusionDependency(ind.leftTable, ind.leftFields, newLeftTable, ind.rightFields)
+                }
+                if (ind.rightFields.toSet.subsetOf(tables(newRightTable))) {
+                  inds += InclusionDependency(ind.leftTable, ind.leftFields, newRightTable, ind.rightFields)
+                }
+              }
+            }
+
+            // Remove old INDs
+            inds = inds.forTables(tables.keys.toSet - table, true)
+
+            // Remove the old table
+            tables.remove(table)
+
+            // TODO Add new INDs between tables
+          }
+        }
+      }
+    }
   }
 
   def infer(): Unit = {
