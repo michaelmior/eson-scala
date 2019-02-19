@@ -98,7 +98,11 @@ class Schema {
             // Remove the old table
             tables.remove(table)
 
-            // TODO Add new INDs between tables
+            val commonFields = tables(newLeftTable) & tables(newRightTable)
+            commonFields.foreach { field =>
+              inds += InclusionDependency(newLeftTable, List(field), newRightTable, List(field))
+              inds += InclusionDependency(newRightTable, List(field), newLeftTable, List(field))
+            }
           }
         }
       }

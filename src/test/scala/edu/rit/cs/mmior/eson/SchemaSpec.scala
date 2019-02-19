@@ -39,5 +39,8 @@ class SchemaSpec extends FlatSpec with Matchers {
     schema.tables should not contain 'R
     schema.tables('R_1) should equal(Set('C, 'D, 'E))
     schema.tables('R_2) should equal(Set('A, 'B, 'C))
+
+    schema.inds.contains(InclusionDependency('R_1, List('C), 'R_2, List('C))) shouldBe true
+    schema.inds.contains(InclusionDependency('R_2, List('C), 'R_1, List('C))) shouldBe true
   }
 }
