@@ -25,4 +25,12 @@ class InclusionDependencySetSpec extends FlatSpec with Matchers {
     inds should not contain (InclusionDependency('R, List('A), 'T, List('C)))
     inds should contain (InclusionDependency('R, List('A), 'S, List('B)))
   }
+
+  "getting INDs for R in R(A) ⊆ S(B) and S(B) ⊆ T(C)" should "only have the IND for R" in {
+    var inds = new InclusionDependencySet()
+    inds += InclusionDependency('R, List('A), 'S, List('C))
+    inds += InclusionDependency('R, List('A), 'R, List('B))
+    inds = inds.forTable('R)
+    inds should contain only (InclusionDependency('R, List('A), 'R, List('B)))
+  }
 }
