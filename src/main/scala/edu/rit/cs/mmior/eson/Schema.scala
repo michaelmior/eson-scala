@@ -45,12 +45,12 @@ class Schema {
   def bcnf_decompose(): Unit = {
     var decomposed = true
     while (decomposed) {
-      decomposed = false
-      fds.foreach { case (table, fdSet) =>
-        fdSet.getAll().foreach { case (left, right) =>
+      decomposed = fds.exists { case (table, fdSet) =>
+        var doesDecompose = false
+        fdSet.getAll().exists { case (left, right) =>
           val isKey = (tables(table) -- left).subsetOf(right)
           if (!isKey) {
-            decomposed = true
+            doesDecompose = true
 
             val newLeftTable = Symbol(table.name + "_1")
             val newRightTable = Symbol(table.name + "_2")
@@ -104,6 +104,8 @@ class Schema {
               inds += InclusionDependency(newRightTable, List(field), newLeftTable, List(field))
             }
           }
+
+          doesDecompose
         }
       }
     }
