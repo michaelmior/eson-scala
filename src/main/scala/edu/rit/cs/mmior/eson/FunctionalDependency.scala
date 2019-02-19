@@ -16,8 +16,8 @@
 
 package edu.rit.cs.mmior.eson
 
-case class FunctionalDependency(left: Set[Symbol], right: Set[Symbol]) {
+case class FunctionalDependency(left: Set[Symbol], right: Symbol) {
   def isTrivial: Boolean = {
-    right subsetOf left
+    left.contains(right)
   }
 }

@@ -24,14 +24,25 @@ class FunctionalDependencySet extends Traversable[FunctionalDependency] {
   def empty: FunctionalDependencySet = new FunctionalDependencySet()
 
   def contains(fd: FunctionalDependency): Boolean = {
-    fds.contains(fd.left) && (fd.right subsetOf fds(fd.left))
+    fd.left.subsets.exists { left =>
+      fds.contains(left) && (fds(left).contains(fd.right))
+    }
   }
 
   private def add(fd: FunctionalDependency): Unit = {
     if (!fds.contains(fd.left)) {
       fds(fd.left) = LinkedHashSet.empty[Symbol]
     }
-    fds(fd.left) ++= fd.right
+    if (fds(fd.left).contains(fd.right)) { return }
+    fds(fd.left) += fd.right
+
+    fds.foreach { case (left, rights) =>
+      if (left.contains(fd.right)) {
+        rights.foreach( right => {
+          add(FunctionalDependency(left - fd.right ++ fd.left, right))
+        })
+      }
+    }
   }
 
   def +=(fd: FunctionalDependency): FunctionalDependencySet = {
@@ -41,19 +52,19 @@ class FunctionalDependencySet extends Traversable[FunctionalDependency] {
   }
 
   override def foreach[U](f: FunctionalDependency => U): Unit = fds.flatMap {
-    case(left, right) => {
-      right.subsets.filter(s => !s.isEmpty).map(s => FunctionalDependency(left, s.toSet))
+    case(left, rights) => {
+      rights.map(FunctionalDependency(left, _))
     }
   }.foreach(f)
 
   // XXX: The set must already contain newFDs
-  private def checkClosure(newFDs: Traversable[FunctionalDependency]): Unit = {
+  def checkClosure(newFDs: Traversable[FunctionalDependency]): Unit = {
     var newerFDs = LinkedHashSet.empty[FunctionalDependency]
     newFDs.foreach { newFD =>
       this.foreach { oldFD =>
-        val newerFD = if (oldFD.left == newFD.right) {
-          Some(FunctionalDependency(newFD.left, oldFD.right.toSet))
-        } else if (newFD.left == oldFD.right) {
+        val newerFD = if (oldFD.left.contains(newFD.right)) {
+          Some(FunctionalDependency(newFD.left, oldFD.right))
+        } else if (newFD.left.contains(oldFD.right)) {
           Some(FunctionalDependency(oldFD.left, newFD.right))
         } else {
           None
