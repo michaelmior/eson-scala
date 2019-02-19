@@ -14,4 +14,8 @@ class FunctionalDependencySpec extends FlatSpec with Matchers {
   "a → b" should "not be trivial" in {
     FunctionalDependency(Set('a), 'b).isTrivial shouldBe false
   }
+
+  "a → b" should "convert to a string" in {
+    FunctionalDependency(Set('a), 'b).toString shouldBe "a → b"
+  }
 }

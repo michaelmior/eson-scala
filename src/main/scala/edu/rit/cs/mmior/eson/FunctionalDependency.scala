@@ -20,4 +20,8 @@ case class FunctionalDependency(left: Set[Symbol], right: Symbol) {
   def isTrivial: Boolean = {
     left.contains(right)
   }
+
+  override def toString(): String = {
+    s"${left.map(_.name).mkString(", ")} → ${right.name}"
+  }
 }

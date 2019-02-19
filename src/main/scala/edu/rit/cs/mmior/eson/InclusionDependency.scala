@@ -21,4 +21,13 @@ case class InclusionDependency(leftTable: Symbol, leftFields: List[Symbol],
   def reverse(): InclusionDependency = {
     InclusionDependency(rightTable, rightFields, leftTable, leftFields)
   }
+
+  override def toString(): String =  {
+    val start = s"${leftTable.name}(${leftFields.map(_.name).mkString(", ")}) ⊆ ${rightTable.name}"
+    if (leftFields == rightFields) {
+      start + s"(…)"
+    } else {
+      start + s"(${rightFields.map(_.name).mkString(", ")})"
+    }
+  }
 }
