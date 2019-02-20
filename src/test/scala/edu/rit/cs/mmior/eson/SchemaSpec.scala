@@ -2,6 +2,8 @@ package edu.rit.cs.mmior.eson
 
 import org.scalatest._
 
+import CustomMatchers._
+
 class SchemaSpec extends FlatSpec with Matchers {
   "R(UV) ⊆ S(XY) and X → Y" should "infer U → V" in {
     val schema = new Schema()
@@ -42,5 +44,40 @@ class SchemaSpec extends FlatSpec with Matchers {
 
     schema.inds.contains(InclusionDependency('R_1, List('C), 'R_2, List('C))) shouldBe true
     schema.inds.contains(InclusionDependency('R_2, List('C), 'R_1, List('C))) shouldBe true
+  }
+
+  "a complete example" should "decompose correctly" in {
+    val schema = new Schema()
+    schema += 'Employees
+    schema += 'EmpProjects
+    schema += 'Managers
+
+    schema.+=('Employees, FunctionalDependency(Set('EmpID), 'EmpName))
+    schema.+=('Employees, FunctionalDependency(Set('EmpID), 'DeptID))
+    schema.+=('Employees, FunctionalDependency(Set('DeptID), 'DeptName))
+
+    schema.+=('EmpProjects, FunctionalDependency(Set('EmpID), 'EmpName))
+    schema.+=('EmpProjects, FunctionalDependency(Set('ProjID), 'ProjName))
+
+    schema.+=('Managers, FunctionalDependency(Set('DeptID), 'EmpID))
+
+    schema += InclusionDependency('EmpProjects, List('EmpID, 'EmpName),
+                                  'Employees, List('EmpID, 'EmpName))
+    schema += InclusionDependency('Managers, List('EmpID),
+                                  'Employees, List('EmpID))
+    schema += InclusionDependency('Employees, List('DeptID),
+                                  'Managers, List('DeptID))
+
+    schema.infer
+    schema.bcnf_decompose
+    schema.fold
+
+    schema should haveTableCount(5)
+
+    schema should haveTableWithFields(Set('EmpID, 'EmpName, 'DeptID))
+    schema should haveTableWithFields(Set('ProjID, 'ProjName))
+    schema should haveTableWithFields(Set('DeptID, 'EmpID))
+    schema should haveTableWithFields(Set('DeptID, 'DeptName))
+    schema should haveTableWithFields(Set('ProjID, 'EmpID))
   }
 }

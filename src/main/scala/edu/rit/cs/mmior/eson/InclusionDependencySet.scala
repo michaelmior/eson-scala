@@ -80,6 +80,18 @@ class InclusionDependencySet() extends Traversable[InclusionDependency] {
     }
   }
 
+  def removeField(table: Symbol, field: Symbol): Unit = {
+    inds.retain { case ((_, leftFields, _), _) =>
+      !leftFields.contains(field)
+    }
+
+    inds.foreach { case ((_, _, rightTable),  rightFields) =>
+      if (rightTable == table) {
+        rightFields.retain(!_.contains(field))
+      }
+    }
+  }
+
   def forTable(table: Symbol, only: Boolean = true): InclusionDependencySet = {
     forTables(Set(table), only)
   }

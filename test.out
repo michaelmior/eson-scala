@@ -1,0 +1,105 @@
+[0m[[0m[0minfo[0m] [0m[0mLoading settings for project eson-scala-old-build from plugins.sbt ...[0m
+[0m[[0m[0minfo[0m] [0m[0mLoading project definition from /home/mmior/apps/eson-scala-old/project[0m
+[0m[[0m[0minfo[0m] [0m[0mLoading settings for project root from build.sbt ...[0m
+[0m[[0m[0minfo[0m] [0m[0mSet current project to eson-scala (in build file:/home/mmior/apps/eson-scala-old/)[0m
+('EmpProjects_2_1,Set('EmpName, 'EmpID))
+('EmpProjects_1,Set('ProjName, 'ProjID))
+('Employees_2,Set('EmpName, 'DeptID, 'EmpID))
+('Employees_1,Set('DeptName, 'DeptID))
+('EmpProjects_2_2,Set('ProjID, 'EmpID))
+========== 'EmpProjects_2_1 ==========
+EmpID → EmpName
+========== 'EmpProjects_1 ==========
+ProjID → ProjName
+========== 'Employees_2 ==========
+EmpID → EmpName
+EmpID → DeptID
+========== 'Employees_1 ==========
+DeptID → DeptName
+========== 'EmpProjects_2_2 ==========
+EmpProjects_2_2(EmpID) ⊆ EmpProjects_2_1(…)
+EmpProjects_2_1(EmpID, EmpName) ⊆ Employees_2(…)
+EmpProjects_1(ProjID) ⊆ EmpProjects_1(…)
+EmpProjects_2_1(EmpName, EmpID) ⊆ Employees_2(…)
+EmpProjects_2_1(EmpID) ⊆ EmpProjects_2_2(…)
+Employees_2(DeptID) ⊆ Employees_1(…)
+Employees_1(DeptID) ⊆ Employees_1(…)
+EmpProjects_2_1(EmpID) ⊆ Employees_2(…)
+EmpProjects_2_2(ProjID) ⊆ EmpProjects_2_2(…)
+EmpProjects_1(ProjID) ⊆ EmpProjects_2_2(…)
+EmpProjects_2_1(EmpName) ⊆ Employees_2(…)
+EmpProjects_2_1(EmpID) ⊆ EmpProjects_2_1(…)
+EmpProjects_2_2(EmpID) ⊆ Employees_2(…)
+Employees_1(DeptID) ⊆ Employees_2(…)
+EmpProjects_2_2(EmpID) ⊆ EmpProjects_2_2(…)
+('EmpProjects_2_1,Set('EmpName, 'EmpID))
+('EmpProjects_1,Set('ProjName, 'ProjID))
+('Employees_2,Set('EmpName, 'DeptID, 'EmpID))
+('Employees_1,Set('DeptName, 'DeptID))
+('EmpProjects_2_2,Set('ProjID, 'EmpID))
+EmpProjects_2_2(EmpID) ⊆ EmpProjects_2_1(…)
+EmpProjects_2_1(EmpID, EmpName) ⊆ Employees_2(…)
+EmpProjects_1(ProjID) ⊆ EmpProjects_1(…)
+EmpProjects_2_1(EmpName, EmpID) ⊆ Employees_2(…)
+EmpProjects_2_1(EmpID) ⊆ EmpProjects_2_2(…)
+Employees_2(DeptID) ⊆ Employees_1(…)
+Employees_1(DeptID) ⊆ Employees_1(…)
+EmpProjects_2_1(EmpID) ⊆ Employees_2(…)
+EmpProjects_2_2(ProjID) ⊆ EmpProjects_2_2(…)
+EmpProjects_1(ProjID) ⊆ EmpProjects_2_2(…)
+EmpProjects_2_1(EmpName) ⊆ Employees_2(…)
+EmpProjects_2_1(EmpID) ⊆ EmpProjects_2_1(…)
+EmpProjects_2_2(EmpID) ⊆ Employees_2(…)
+Employees_1(DeptID) ⊆ Employees_2(…)
+EmpProjects_2_2(EmpID) ⊆ EmpProjects_2_2(…)
+========== 'EmpProjects_2_1 ==========
+EmpID → EmpName
+========== 'EmpProjects_1 ==========
+ProjID → ProjName
+========== 'Employees_2 ==========
+EmpID → EmpName
+EmpID → DeptID
+========== 'Employees_1 ==========
+DeptID → DeptName
+========== 'EmpProjects_2_2 ==========
+[0m[[0m[0minfo[0m] [0m[0m[32mFunctionalDependencySetSpec:[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32madding b → c to a → b[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should infer a → c[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mthe set with b → c[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should contain ab → c[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32madding b → d to {ad → c, c → e}[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should contain ab → c and ab → e[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mFunctionalDependencySpec:[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32ma → a[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should be trivial[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mab → a[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should be trivial[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32ma → b[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should not be trivial[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32ma → b[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should convert to a string[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mInclusionDependencySetSpec:[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32madding R(AB) ⊆ S(CD)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should also add R(A) ⊆ S(C)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32madding R(A) ⊆ S(B) and S(B) ⊆ T(C)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should also add R(A) ⊆ T(C)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mSchemaSpec:[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mgetting INDs for R and T in R(A) ⊆ S(B) and S(B) ⊆ T(C)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should remove anything with T[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32ma complete example[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mgetting INDs for R in R(A) ⊆ S(B) and S(B) ⊆ T(C)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should only have the IND for R[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should decompose correctly[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mInclusionDependencySpec:[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mR(A) ⊆ S(B)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should reverse to S(B) ⊆ R(A)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mR(A) ⊆ S(B)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should convert to a string[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mR(A, B) ⊆ S(A, B)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should convert to a string[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[36mRun completed in 459 milliseconds.[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[36mTotal number of tests run: 15[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[36mSuites: completed 5, aborted 0[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[36mTests: succeeded 15, failed 0, canceled 0, ignored 0, pending 0[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mAll tests passed.[0m[0m
+[0m[[0m[32msuccess[0m] [0m[0mTotal time: 1 s, completed Feb 19, 2019, 4:06:52 PM[0m

@@ -29,6 +29,11 @@ class FunctionalDependencySet extends Traversable[FunctionalDependency] {
     }
   }
 
+  def removeField(field: Symbol): Unit = {
+    fds.retain { case (left, _) => !left.contains(field) }
+    fds.foreach { case (_, rights) => !rights.contains(field) }
+  }
+
   private[eson] def getAll(): HashMap[Set[Symbol], LinkedHashSet[Symbol]] = {
     fds
   }

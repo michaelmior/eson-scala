@@ -42,6 +42,48 @@ class Schema {
     tables(table) = new HashSet[Symbol]
   }
 
+  def fold(): Unit =  {
+    var folded = true
+    while (folded) {
+      folded =  false
+
+      // Remove tables which are not needed
+      while (inds.exists { ind =>
+        if (inds.contains(ind.reverse) &&
+              ind.leftFields.toSet == tables(ind.leftTable).toSet &&
+              ind.leftFields.size >= ind.rightFields.size) {
+          tables.remove(ind.leftTable)
+          fds.remove(ind.leftTable)
+          if (fds.contains(ind.leftTable) && fds(ind.leftTable).isEmpty) {
+            fds.remove(ind.leftTable)
+          }
+          inds = inds.forTables(tables.keys.toSet - ind.leftTable, true)
+
+          folded = true
+          true
+        } else {
+          false
+        }
+      }) {}
+
+      // Remove fields which are not needed
+      while (inds.exists { ind =>
+        fds(ind.leftTable).exists { fd =>
+          if ((fd.left + fd.right).subsetOf(ind.leftFields.toSet)) {
+            fds(ind.leftTable).removeField(fd.right)
+            inds.removeField(ind.leftTable, fd.right)
+            tables(ind.leftTable) -= fd.right
+
+            folded = true
+            true
+          } else {
+            false
+          }
+        }
+      }) {}
+    }
+  }
+
   def bcnf_decompose(): Unit = {
     var decomposed = true
     while (decomposed) {
@@ -142,12 +184,19 @@ class Schema {
         tableInds.foreach { ind =>
           if (ind.rightFields.toSet == (fd.left + fd.right)) {
             tableInds.foreach { ind2 =>
-              if ((fd.left + fd.right).subsetOf(ind.rightFields.toSet) &&
-                  ind.leftFields.size == fd.left.size + 1) {
+              if (ind != ind2 && (fd.left + fd.right).subsetOf(ind.rightFields.toSet) &&
+                  ind.leftFields.zip(ind2.leftFields).takeWhile(x => x._1 == x._2).length == fd.left.size &&
+                  fd.left.subsetOf(ind2.rightFields.toSet)) {
                 val left = ind.leftFields :+ ind2.leftFields.last
                 val right = fd.left.toList :+ fd.right :+ ind2.rightFields.last
                 val newIND = InclusionDependency(ind.leftTable, left, ind.rightTable, right)
-                if (!inds.contains(newIND)) {
+                if (!inds.contains(newIND) && left.distinct == left && right.distinct == right) {
+                  if (newIND.leftFields.toSet.size != newIND.leftFields.size) {
+                    System.exit(1)
+                  }
+                  if (newIND.rightFields.toSet.size != newIND.rightFields.size) {
+                    System.exit(1)
+                  }
                   inds += newIND
                   changed = true
                 }
