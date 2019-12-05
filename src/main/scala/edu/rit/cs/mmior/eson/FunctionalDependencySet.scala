@@ -1,4 +1,4 @@
-// Copyright (C) 2018 the original author or authors.
+// Copyright (C) 2018-2019 the original author or authors.
 // See the LICENCE.md file distributed with this work for additional
 // information regarding copyright ownership.
 //
