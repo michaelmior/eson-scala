@@ -48,6 +48,9 @@ class Schema {
       folded =  false
 
       // Remove tables which are not needed
+      // This happens when a bidirectional IND exists between all the
+      // columns in one table and these columns are a subset of the
+      // columns which are contained in the second table
       while (inds.exists { ind =>
         if (inds.contains(ind.reverse) &&
               ind.leftFields.toSet == tables(ind.leftTable).toSet &&
@@ -87,13 +90,18 @@ class Schema {
   def bcnf_decompose(): Unit = {
     var decomposed = true
     while (decomposed) {
+      // Try to find a table with an FD which violats BCNF
       decomposed = fds.exists { case (table, fdSet) =>
         var doesDecompose = false
+
+        // Check this table for a functional dependency that
+        // does not represent a key and then decompose
         fdSet.getAll().exists { case (left, right) =>
           val isKey = (tables(table) -- left).subsetOf(right)
           if (!isKey) {
             doesDecompose = true
 
+            // Generate the newly decomposed tables
             val newLeftTable = Symbol(table.name + "_1")
             val newRightTable = Symbol(table.name + "_2")
             tables(newLeftTable) = HashSet() ++ left ++ right
@@ -140,6 +148,8 @@ class Schema {
             // Remove the old table
             tables.remove(table)
 
+            // Add a new inclusion dependency for the fields
+            // the newly decomposed tables have in common
             val commonFields = tables(newLeftTable) & tables(newRightTable)
             commonFields.foreach { field =>
               inds += InclusionDependency(newLeftTable, List(field), newRightTable, List(field))
