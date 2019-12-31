@@ -42,7 +42,7 @@ class FunctionalDependencySet extends Traversable[FunctionalDependency] {
     if (!fds.contains(fd.left)) {
       fds(fd.left) = LinkedHashSet.empty[Symbol]
     }
-    if (fds(fd.left).contains(fd.right)) { return }
+    if (fds(fd.left).contains(fd.right)) { return }  // scalastyle:ignore
     fds(fd.left) += fd.right
 
     fds.foreach { case (left, rights) =>
