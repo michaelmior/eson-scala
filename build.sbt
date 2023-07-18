@@ -10,8 +10,7 @@ lazy val root = (project in file(".")).
     commonSettings,
     inThisBuild(List(
       organization := "edu.rit.cs",
-      scalaVersion := "2.12.18",
-      crossScalaVersions := Seq("2.10.7", "2.11.12", "2.12.18"),
+      scalaVersion := "2.13.11",
       version      := "0.1.0-SNAPSHOT"
     )),
     name := "eson-scala",

@@ -21,7 +21,7 @@ import scala.collection.mutable.{HashMap, LinkedHashSet}
 class FunctionalDependencySet extends Traversable[FunctionalDependency] {
   private val fds = HashMap.empty[Set[Symbol], LinkedHashSet[Symbol]]
 
-  def empty: FunctionalDependencySet = new FunctionalDependencySet()
+  override def empty: FunctionalDependencySet = new FunctionalDependencySet()
 
   def contains(fd: FunctionalDependency): Boolean = {
     fd.left.subsets.exists { left =>
@@ -60,11 +60,11 @@ class FunctionalDependencySet extends Traversable[FunctionalDependency] {
     this
   }
 
-  override def foreach[U](f: FunctionalDependency => U): Unit = fds.flatMap {
+  override def iterator: Iterator[FunctionalDependency] = fds.flatMap {
     case(left, rights) => {
       rights.map(FunctionalDependency(left, _))
     }
-  }.foreach(f)
+  }.iterator
 
   // XXX: The set must already contain newFDs
   def checkClosure(newFDs: Traversable[FunctionalDependency]): Unit = {

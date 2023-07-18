@@ -26,9 +26,9 @@ class InclusionDependencySet() extends Traversable[InclusionDependency] {
     inds.contains(key) && inds(key).contains(ind.rightFields)
   }
 
-  override def foreach[U](f: InclusionDependency => U): Unit = inds.foreach { case((leftTable, leftFields, rightTable), rights) =>
-    rights.map(InclusionDependency(leftTable, leftFields, rightTable, _)).foreach(f)
-  }
+  override def iterator: Iterator[InclusionDependency] = inds.flatMap { case((leftTable, leftFields, rightTable), rights) =>
+    rights.map(InclusionDependency(leftTable, leftFields, rightTable, _))
+  }.iterator
 
   private def add(ind: InclusionDependency): Unit = {
     val indexSet = (0 to ind.leftFields.size - 1).toSet.subsets.filter(s => !s.isEmpty)
