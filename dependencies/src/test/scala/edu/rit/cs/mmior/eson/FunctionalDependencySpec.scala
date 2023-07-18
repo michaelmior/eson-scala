@@ -1,8 +1,9 @@
 package edu.rit.cs.mmior.eson
 
-import org.scalatest._
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
 
-class FunctionalDependencySpec extends FlatSpec with Matchers {
+class FunctionalDependencySpec extends AnyFlatSpec with Matchers {
   "a → a" should "be trivial" in {
     FunctionalDependency(Set('a), 'a).isTrivial shouldBe true
   }

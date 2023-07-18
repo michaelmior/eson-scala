@@ -1,8 +1,9 @@
 package edu.rit.cs.mmior.eson
 
-import org.scalatest._
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
 
-class InclusionDependencySetSpec extends FlatSpec with Matchers {
+class InclusionDependencySetSpec extends AnyFlatSpec with Matchers {
   "adding R(AB) ⊆ S(CD)" should "also add R(A) ⊆ S(C)" in {
     var inds = new InclusionDependencySet()
     inds += InclusionDependency('R, List('A, 'B), 'S, List('C, 'D))

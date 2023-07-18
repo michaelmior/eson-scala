@@ -1,6 +1,7 @@
 package edu.rit.cs.mmior.eson
 
-import org.scalatest._
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
 
 import edu.rit.cs.mmior.eson.MetanomeConversions._
 import edu.rit.cs.mmior.eson.{FunctionalDependency, InclusionDependency}
@@ -8,7 +9,7 @@ import edu.rit.cs.mmior.eson.{FunctionalDependency, InclusionDependency}
 import de.metanome.algorithm_integration.{ColumnCombination, ColumnIdentifier, ColumnPermutation}
 import de.metanome.algorithm_integration.results.{FunctionalDependency => MetanomeFD, InclusionDependency => MetanomeIND}
 
-class MetanomeConversionsSpec extends FlatSpec with Matchers {
+class MetanomeConversionsSpec extends AnyFlatSpec with Matchers {
   "R(A) ⊆ S(B)" should "convert from Metanome" in {
     val metanomeIND = new MetanomeIND(new ColumnPermutation(new ColumnIdentifier("R", "A")), new ColumnPermutation(new ColumnIdentifier("S", "B")))
     val ind: InclusionDependency = metanomeIND

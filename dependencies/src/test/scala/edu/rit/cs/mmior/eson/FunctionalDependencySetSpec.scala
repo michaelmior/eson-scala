@@ -1,8 +1,9 @@
 package edu.rit.cs.mmior.eson
 
-import org.scalatest._
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
 
-class FunctionalDependencySetSpec extends FlatSpec with Matchers {
+class FunctionalDependencySetSpec extends AnyFlatSpec with Matchers {
   "adding b → c to a → b" should "infer a → c" in {
     var fds = new FunctionalDependencySet()
     fds += FunctionalDependency(Set('a), 'b)

@@ -1,10 +1,11 @@
 package edu.rit.cs.mmior.eson
 
-import org.scalatest._
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
 
 import CustomMatchers._
 
-class SchemaSpec extends FlatSpec with Matchers {
+class SchemaSpec extends AnyFlatSpec with Matchers {
   "R(UV) ⊆ S(XY) and X → Y" should "infer U → V" in {
     val schema = new Schema()
     schema += 'R
