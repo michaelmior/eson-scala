@@ -25,5 +25,5 @@ lazy val metanome = (project in file("metanome")).
   settings(
     commonSettings,
     resolvers += "michaelmior-Metanome" at "https://packagecloud.io/michaelmior/Metanome/maven2",
-    libraryDependencies += "de.metanome" % "algorithm_integration" % "1.2-calcite-SNAPSHOT"
+    libraryDependencies += "de.metanome" % "algorithm_integration" % "1.2-json-SNAPSHOT"
   ).dependsOn(dependencies)
